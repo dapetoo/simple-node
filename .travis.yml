@@ -1,1 +1,26 @@
 language: node-js
+node_js: 
+  - 13
+
+services: 
+  - docker
+
+# Pre testing installs
+install: 
+  - echo "nothing needs to be installed"
+
+#scripts to be run such as tests
+before_script: 
+  - echo "no tests"
+
+script: 
+  - docker --version #print the version for logging
+  - docker build -t simple-node .
+  - docker tag simple-node dapetoo/simple-node:latest
+
+after_success:
+  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push dapetoo/simple-node 
+
+#deploy
+".travis.yml" 29L, 579C
